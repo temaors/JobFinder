@@ -1,75 +1,75 @@
-JobFinder/ /n
-├── .github/                  # GitHub Actions workflows/n
-├── .vscode/                  # VSCode settings/n
-├── src/                      # .NET Backend/n
-│   ├── JobFinder.API/                # Web API Layer/n
-│   │   ├── Controllers/               # API Controllers/n
-│   │   │   ├── AuthController.cs/n
-│   │   │   ├── WorkersController.cs/n
-│   │   │   ├── JobsController.cs/n
-│   │   │   └── ReviewsController.cs/n
-│   │   ├── Middleware/                # Custom middleware/n
-│   │   │   ├── ExceptionHandlingMiddleware.cs/n
-│   │   │   └── JwtMiddleware.cs/n
-│   │   ├── Extensions/                # Service extensions/n
-│   │   │   └── ServiceCollectionExtensions.cs/n
-│   │   ├── Properties/ /n
-│   │   │   └── launchSettings.json/n
-│   │   ├── appsettings.json           # Configuration/n
-│   │   ├── Program.cs                 # Entry point/n
+JobFinder/
+├── .github/                  # GitHub Actions workflows
+├── .vscode/                  # VSCode settings
+├── src/                      # .NET Backend
+│   ├── JobFinder.API/                # Web API Layer
+│   │   ├── Controllers/               # API Controllers
+│   │   │   ├── AuthController.cs
+│   │   │   ├── WorkersController.cs
+│   │   │   ├── JobsController.cs
+│   │   │   └── ReviewsController.cs
+│   │   ├── Middleware/                # Custom middleware
+│   │   │   ├── ExceptionHandlingMiddleware.cs
+│   │   │   └── JwtMiddleware.cs
+│   │   ├── Extensions/                # Service extensions
+│   │   │   └── ServiceCollectionExtensions.cs
+│   │   ├── Properties/
+│   │   │   └── launchSettings.json
+│   │   ├── appsettings.json           # Configuration
+│   │   ├── Program.cs                 # Entry point
 │   │   └── JobFinder.API.csproj
 │   │
-│   ├── JobFinder.Core/                # Domain Layer/n
-│   │   ├── Entities/                  # Domain models/n
-│   │   │   ├── User.cs/n
-│   │   │   ├── WorkerProfile.cs/n
-│   │   │   ├── Job.cs/n
-│   │   │   ├── Review.cs/n
-│   │   │   └── Notification.cs/n
-│   │   ├── Enums/                     # Enumerations/n
-│   │   │   ├── JobType.cs/n
-│   │   │   └── JobStatus.cs/n
-│   │   ├── Interfaces/                # Repository interfaces/n
-│   │   │   ├── IWorkerRepository.cs/n
-│   │   │   └── IUnitOfWork.cs/n
-│   │   ├── Exceptions/                # Custom exceptions/n
-│   │   │   └── NotFoundException.cs/n
-│   │   └── JobFinder.Core.csproj/n
+│   ├── JobFinder.Core/                # Domain Layer
+│   │   ├── Entities/                  # Domain models
+│   │   │   ├── User.cs
+│   │   │   ├── WorkerProfile.cs
+│   │   │   ├── Job.cs
+│   │   │   ├── Review.cs
+│   │   │   └── Notification.cs
+│   │   ├── Enums/                     # Enumerations
+│   │   │   ├── JobType.cs
+│   │   │   └── JobStatus.cs
+│   │   ├── Interfaces/                # Repository interfaces
+│   │   │   ├── IWorkerRepository.cs
+│   │   │   └── IUnitOfWork.cs
+│   │   ├── Exceptions/                # Custom exceptions
+│   │   │   └── NotFoundException.cs
+│   │   └── JobFinder.Core.csproj
 │   │
-│   ├── JobFinder.Application/         # Business Logic Layer/n
-│   │   ├── Services/                  # Domain services/n
-│   │   │   ├── IWorkerService.cs/n
-│   │   │   └── WorkerService.cs/n
-│   │   ├── Features/                  # CQRS implementation/n
-│   │   │   ├── Workers/ /n
-│   │   │   │   ├── Queries/ /n
-│   │   │   │   │   ├── GetWorkerByIdQuery.cs/n
-│   │   │   │   │   └── GetWorkerByIdHandler.cs/n
+│   ├── JobFinder.Application/         # Business Logic Layer
+│   │   ├── Services/                  # Domain services
+│   │   │   ├── IWorkerService.cs
+│   │   │   └── WorkerService.cs
+│   │   ├── Features/                  # CQRS implementation
+│   │   │   ├── Workers/
+│   │   │   │   ├── Queries/
+│   │   │   │   │   ├── GetWorkerByIdQuery.cs
+│   │   │   │   │   └── GetWorkerByIdHandler.cs
 │   │   │   │   └── Commands/
-│   │   │   │       ├── CreateWorkerCommand.cs/n
-│   │   │   │       └── CreateWorkerHandler.cs/n
+│   │   │   │       ├── CreateWorkerCommand.cs
+│   │   │   │       └── CreateWorkerHandler.cs
 │   │   │   └── Auth/
-│   │   ├── Mappings/                  # AutoMapper profiles/n
-│   │   │   └── WorkerProfileMapping.cs/n
-│   │   ├── Validators/                # FluentValidation/n
-│   │   │   └── CreateWorkerValidator.cs/n
-│   │   └── JobFinder.Application.csproj/n
+│   │   ├── Mappings/                  # AutoMapper profiles
+│   │   │   └── WorkerProfileMapping.cs
+│   │   ├── Validators/                # FluentValidation
+│   │   │   └── CreateWorkerValidator.cs
+│   │   └── JobFinder.Application.csproj
 │   │
-│   ├── JobFinder.Infrastructure/      # Infrastructure Layer/n
-│   │   ├── Data/                      # Database context/n
-│   │   │   ├── AppDbContext.cs/n
-│   │   │   └── SeedData.cs            # Initial data seeding/n
-│   │   ├── Repositories/              # Repository implementations/n
-│   │   │   ├── WorkerRepository.cs/n
-│   │   │   └── UnitOfWork.cs/n
-│   │   ├── Identity/                  # Auth implementation/n
-│   │   │   ├── ApplicationUser.cs/n
-│   │   │   └── IdentityService.cs/n
-│   │   ├── Services/                  # External services/n
-│   │   │   ├── EmailService.cs/n
-│   │   │   └── JwtService.cs/n
-│   │   ├── Migrations/                # EF Core migrations/n
-│   │   └── JobFinder.Infrastructure.csproj/n
+│   ├── JobFinder.Infrastructure/      # Infrastructure Layer
+│   │   ├── Data/                      # Database context
+│   │   │   ├── AppDbContext.cs
+│   │   │   └── SeedData.cs            # Initial data seeding
+│   │   ├── Repositories/              # Repository implementations
+│   │   │   ├── WorkerRepository.cs
+│   │   │   └── UnitOfWork.cs
+│   │   ├── Identity/                  # Auth implementation
+│   │   │   ├── ApplicationUser.cs
+│   │   │   └── IdentityService.cs
+│   │   ├── Services/                  # External services
+│   │   │   ├── EmailService.cs
+│   │   │   └── JwtService.cs
+│   │   ├── Migrations/                # EF Core migrations
+│   │   └── JobFinder.Infrastructure.csproj
 │   │
 │   └── JobFinder.Tests/               # Unit Tests
 │       ├── Application.Tests/
