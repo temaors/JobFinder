@@ -1,14 +1,22 @@
+using System.Linq.Expressions;
+
 namespace JobFinder.Core.Interfaces
 {
     public interface IRepository<TEntity> : IDisposable
         where TEntity : class
     {
-        // IQueryable<TEntity> GetAll();
-        // Task<TEntity?> FindBy(Func<TEntity, bool> entity);
-        // Task<TEntity> GetById(int id);
-        // Task<TEntity> Create(TEntity entity);
-        // TEntity Update(TEntity entity);
-        // Task Save();
-        // Task Delete(int id);
+        IEnumerable<TEntity> Get(
+            Expression<Func<TEntity, bool>> filter = null,
+            Func<IQueryable<TEntity>, IOrderedQueryable<TEntity>> orderBy = null,
+            string includeProperties = "");
+        TEntity GetById(object id);
+
+        void Insert(TEntity entity);
+
+        void Delete(object id);
+
+        void Delete(TEntity entityToDelete);
+
+        void Update(TEntity entityToUpdate);
     }
 }

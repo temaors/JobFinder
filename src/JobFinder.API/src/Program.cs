@@ -1,12 +1,7 @@
-﻿using Microsoft.EntityFrameworkCore;
-using Microsoft.AspNetCore.Builder;
-using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Hosting;
+﻿using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.Configuration;
-using Microsoft.AspNetCore.Identity;
-
-using JobFinder.Infrastructure.Database;
-using JobFinder.Core.Models;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.OpenApi.Models;
 
 namespace JobFinder.API 
 {
@@ -15,45 +10,43 @@ namespace JobFinder.API
         public static void Main(string[] args)
         {
             var builder = WebApplication.CreateBuilder(args);
-            
-            builder.Configuration
-                .SetBasePath(Directory.GetCurrentDirectory())
-                .AddJsonFile("appsettings.json", optional: false, reloadOnChange: true)
-                .AddJsonFile($"appsettings.{builder.Environment.EnvironmentName}.json", optional: true)
-                .AddEnvironmentVariables();
-            
-            var connectionString = builder.Configuration.GetConnectionString("Default")
-                ?? throw new InvalidOperationException("Connection string Default is not found");
 
-            builder.Services.AddDbContext<JobFinderDbContext>(options =>
-                options.UseNpgsql());
-
-            builder.Services.AddIdentity<User, IdentityRole>();
-                //.AddEntityFrameworkStores<JobFinderDbContext>();
-            // builder.Services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true)
-            //     .AddEntityFrameworkStores<ApplicationDbContext>();
-
+            // Add services to the container
             builder.Services.AddControllers();
-
             builder.Services.AddEndpointsApiExplorer();
-            builder.Services.AddSwaggerGen();
+            builder.Services.AddSwaggerGen(c =>
+            {
+                c.SwaggerDoc("v1", new OpenApiInfo { Title = "JobFinder API", Version = "v1" });
+            });
+
+            // Add CORS
+            builder.Services.AddCors(options =>
+            {
+                options.AddPolicy("AllowReactApp", policy =>
+                {
+                    policy.WithOrigins("http://localhost:5173")
+                          .AllowAnyHeader()
+                          .AllowAnyMethod();
+                });
+            });
 
             var app = builder.Build();
 
-            app.UseSwagger();
-            app.UseSwaggerUI();
-
-            if (builder.Environment.IsDevelopment())
+            // Configure the HTTP request pipeline
+            if (app.Environment.EnvironmentName == "Development")
             {
-                app.UseSwaggerUI(options => 
+                app.UseSwagger();
+                app.UseSwaggerUI(c =>
                 {
-                    options.SwaggerEndpoint("/swagger/v1/swagger.json", "v1");
-                    options.RoutePrefix = string.Empty;
+                    c.SwaggerEndpoint("/swagger/v1/swagger.json", "JobFinder API v1");
+                    c.RoutePrefix = string.Empty;
                 });
             }
 
-
-            app.MapGet("/", () => "Hello World!");
+            app.UseHttpsRedirection();
+            app.UseCors("AllowReactApp");
+            app.UseAuthorization();
+            app.MapControllers();
 
             app.Run();
         }

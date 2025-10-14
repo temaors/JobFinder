@@ -1,138 +1,195 @@
+# JobFinder - Платформа поиска работы
+
+Современная платформа для поиска работы с архитектурой .NET + React.
+
+## 🚀 Быстрый старт
+
+### Предварительные требования
+- .NET 8.0 SDK
+- Node.js 18+
+- PostgreSQL 14+
+
+### Запуск проекта
+
+1. **Клонирование репозитория**
+```bash
+git clone <repository-url>
+cd JobFinder
+```
+
+2. **Настройка базы данных**
+```bash
+# Создайте базу данных PostgreSQL
+createdb jobfinder
+
+# Примените миграции
+dotnet ef database update --project src/JobFinder.Infrastructure --startup-project src/JobFinder.API
+```
+
+3. **Запуск API**
+```bash
+cd src/JobFinder.API
+dotnet run
+```
+
+4. **Запуск клиента**
+```bash
+cd client
+npm install
+npm start
+```
+
+## 🏗️ Архитектура
+
+Проект использует Clean Architecture с разделением на слои:
+
+```
 JobFinder/
-├── .github/                  # GitHub Actions workflows
-├── .vscode/                  # VSCode settings
-├── src/                      # .NET Backend
-│   ├── JobFinder.API/                # Web API Layer
-│   │   ├── Controllers/               # API Controllers
-│   │   │   ├── AuthController.cs
-│   │   │   ├── WorkersController.cs
-│   │   │   ├── JobsController.cs
-│   │   │   └── ReviewsController.cs
-│   │   ├── Middleware/                # Custom middleware
-│   │   │   ├── ExceptionHandlingMiddleware.cs
-│   │   │   └── JwtMiddleware.cs
-│   │   ├── Extensions/                # Service extensions
-│   │   │   └── ServiceCollectionExtensions.cs
-│   │   ├── Properties/
-│   │   │   └── launchSettings.json
-│   │   ├── appsettings.json           # Configuration
-│   │   ├── Program.cs                 # Entry point
-│   │   └── JobFinder.API.csproj
-│   │
-│   ├── JobFinder.Core/                # Domain Layer
-│   │   ├── Entities/                  # Domain models
-│   │   │   ├── User.cs
-│   │   │   ├── WorkerProfile.cs
-│   │   │   ├── Job.cs
-│   │   │   ├── Review.cs
-│   │   │   └── Notification.cs
-│   │   ├── Enums/                     # Enumerations
-│   │   │   ├── JobType.cs
-│   │   │   └── JobStatus.cs
-│   │   ├── Interfaces/                # Repository interfaces
-│   │   │   ├── IWorkerRepository.cs
-│   │   │   └── IUnitOfWork.cs
-│   │   ├── Exceptions/                # Custom exceptions
-│   │   │   └── NotFoundException.cs
-│   │   └── JobFinder.Core.csproj
-│   │
-│   ├── JobFinder.Application/         # Business Logic Layer
-│   │   ├── Services/                  # Domain services
-│   │   │   ├── IWorkerService.cs
-│   │   │   └── WorkerService.cs
-│   │   ├── Features/                  # CQRS implementation
-│   │   │   ├── Workers/
-│   │   │   │   ├── Queries/
-│   │   │   │   │   ├── GetWorkerByIdQuery.cs
-│   │   │   │   │   └── GetWorkerByIdHandler.cs
-│   │   │   │   └── Commands/
-│   │   │   │       ├── CreateWorkerCommand.cs
-│   │   │   │       └── CreateWorkerHandler.cs
-│   │   │   └── Auth/
-│   │   ├── Mappings/                  # AutoMapper profiles
-│   │   │   └── WorkerProfileMapping.cs
-│   │   ├── Validators/                # FluentValidation
-│   │   │   └── CreateWorkerValidator.cs
-│   │   └── JobFinder.Application.csproj
-│   │
-│   ├── JobFinder.Infrastructure/      # Infrastructure Layer
-│   │   ├── Data/                      # Database context
-│   │   │   ├── AppDbContext.cs
-│   │   │   └── SeedData.cs            # Initial data seeding
-│   │   ├── Repositories/              # Repository implementations
-│   │   │   ├── WorkerRepository.cs
-│   │   │   └── UnitOfWork.cs
-│   │   ├── Identity/                  # Auth implementation
-│   │   │   ├── ApplicationUser.cs
-│   │   │   └── IdentityService.cs
-│   │   ├── Services/                  # External services
-│   │   │   ├── EmailService.cs
-│   │   │   └── JwtService.cs
-│   │   ├── Migrations/                # EF Core migrations
-│   │   └── JobFinder.Infrastructure.csproj
-│   │
-│   └── JobFinder.Tests/               # Unit Tests
-│       ├── Application.Tests/
-│       ├── Infrastructure.Tests/
-│       └── JobFinder.Tests.csproj
-│
-├── client/                      # React Frontend
-│   ├── public/                  # Static assets
-│   │   ├── index.html
-│   │   └── favicon.ico
-│   ├── src/
-│   │   ├── api/                 # API clients
-│   │   │   ├── authApi.ts
-│   │   │   └── workerApi.ts
-│   │   ├── components/          # UI Components
-│   │   │   ├── common/
-│   │   │   │   ├── Header.tsx
-│   │   │   │   └── Footer.tsx
-│   │   │   ├── workers/
-│   │   │   │   ├── WorkerCard.tsx
-│   │   │   │   └── WorkerForm.tsx
-│   │   │   └── jobs/
-│   │   ├── pages/               # Application pages
-│   │   │   ├── HomePage.tsx
-│   │   │   ├── LoginPage.tsx
-│   │   │   ├── WorkerListPage.tsx
-│   │   │   └── WorkerDetailPage.tsx
-│   │   ├── store/               # State management
-│   │   │   ├── slices/
-│   │   │   │   ├── authSlice.ts
-│   │   │   │   └── workerSlice.ts
-│   │   │   └── store.ts
-│   │   ├── types/               # TypeScript types
-│   │   │   └── workerTypes.ts
-│   │   ├── utils/               # Utilities
-│   │   │   └── authUtils.ts
-│   │   ├── App.tsx              # Main component
-│   │   ├── index.tsx            # Entry point
-│   │   └── react-app-env.d.ts
-│   ├── .env                     # Environment variables
-│   ├── package.json
-│   ├── tsconfig.json
-│   └── README.md
-│
-├── docker/                      # Docker configurations
-│   ├── api.Dockerfile
-│   └── client.Dockerfile
-│
-├── scripts/                     # Utility scripts
-│   ├── database/
-│   │   └── seed_db.sh
-│   └── deploy.sh
-│
-├── docker-compose.yml           # Full stack definition
-├── .gitignore
-├── JobFinder.sln                # .NET Solution file
-├── README.md                    # Project documentation
-└── SECURITY.md
+├── src/
+│   ├── JobFinder.API/           # Web API Layer
+│   ├── JobFinder.Application/   # Business Logic Layer
+│   ├── JobFinder.Core/          # Domain Layer
+│   └── JobFinder.Infrastructure/# Infrastructure Layer
+└── client/                      # React Frontend
+```
 
+## ✨ Основные улучшения
 
+### Backend (.NET)
+- ✅ **Clean Architecture** - правильное разделение слоев
+- ✅ **CQRS Pattern** - разделение команд и запросов
+- ✅ **Repository Pattern** - абстракция доступа к данным
+- ✅ **DTO Pattern** - отдельные модели для API
+- ✅ **Валидация данных** - Data Annotations
+- ✅ **Swagger документация** - автоматическая генерация API docs
+- ✅ **CORS настройки** - для работы с фронтендом
+- ✅ **Обработка ошибок** - централизованная обработка исключений
 
+### Frontend (React)
+- ✅ **Material-UI** - современный UI фреймворк
+- ✅ **TypeScript** - типизация
+- ✅ **API клиенты** - структурированные запросы к API
+- ✅ **Компонентная архитектура** - переиспользуемые компоненты
+- ✅ **Роутинг** - React Router
+- ✅ **Обработка состояний** - loading, error states
 
-dotnet ef database update
-  --project src/JobFinder.Infrastructure
-  --startup-project src/JobFinder.API
-  --connection "Host=localhost;Port=5432;Database=jobfinder;Username=postgres;Password=postgres"
+### База данных
+- ✅ **Entity Framework Core** - ORM
+- ✅ **Миграции** - версионирование схемы БД
+- ✅ **PostgreSQL** - надежная СУБД
+
+## 🔧 Дополнительные улучшения
+
+### 1. Аутентификация и авторизация
+- [ ] JWT токены
+- [ ] Refresh токены
+- [ ] Роли пользователей
+- [ ] Защищенные маршруты
+
+### 2. Поиск и фильтрация
+- [ ] Elasticsearch для поиска
+- [ ] Расширенные фильтры
+- [ ] Пагинация результатов
+
+### 3. Уведомления
+- [ ] Email уведомления
+- [ ] Push уведомления
+- [ ] In-app уведомления
+
+### 4. Тестирование
+- [ ] Unit тесты
+- [ ] Integration тесты
+- [ ] E2E тесты
+
+### 5. DevOps
+- [ ] Docker контейнеризация
+- [ ] CI/CD pipeline
+- [ ] Мониторинг и логирование
+
+### 6. Безопасность
+- [ ] Rate limiting
+- [ ] Input validation
+- [ ] SQL injection protection
+- [ ] XSS protection
+
+## 📁 Структура проекта
+
+```
+JobFinder/
+├── src/
+│   ├── JobFinder.API/
+│   │   ├── Controllers/         # API контроллеры
+│   │   ├── Middleware/          # Пользовательские middleware
+│   │   └── Program.cs           # Точка входа
+│   ├── JobFinder.Application/
+│   │   ├── Services/            # Бизнес-логика
+│   │   ├── DTO/                 # Data Transfer Objects
+│   │   └── Validators/          # Валидация
+│   ├── JobFinder.Core/
+│   │   ├── Models/              # Доменные модели
+│   │   ├── Interfaces/          # Интерфейсы репозиториев
+│   │   └── Enums/               # Перечисления
+│   └── JobFinder.Infrastructure/
+│       ├── Database/            # DbContext и конфигурация
+│       ├── Repositories/        # Реализации репозиториев
+│       └── Migrations/          # Миграции БД
+└── client/
+    ├── src/
+    │   ├── components/          # React компоненты
+    │   ├── pages/               # Страницы приложения
+    │   ├── api/                 # API клиенты
+    │   └── utils/               # Утилиты
+    └── package.json
+```
+
+## 🛠️ Команды разработки
+
+```bash
+# Создание новой миграции
+dotnet ef migrations add MigrationName --project src/JobFinder.Infrastructure --startup-project src/JobFinder.API
+
+# Применение миграций
+dotnet ef database update --project src/JobFinder.Infrastructure --startup-project src/JobFinder.API
+
+# Запуск тестов
+dotnet test
+
+# Сборка проекта
+dotnet build
+
+# Очистка
+dotnet clean
+```
+
+## 📝 API Endpoints
+
+### Jobs
+- `GET /api/jobs` - Получить все вакансии
+- `GET /api/jobs/{id}` - Получить вакансию по ID
+- `POST /api/jobs` - Создать новую вакансию
+- `PUT /api/jobs/{id}` - Обновить вакансию
+- `DELETE /api/jobs/{id}` - Удалить вакансию
+
+### Workers
+- `GET /api/workers` - Получить всех работников
+- `GET /api/workers/{id}` - Получить работника по ID
+
+### Auth
+- `POST /api/auth/login` - Вход в систему
+- `POST /api/auth/register` - Регистрация
+
+## 🤝 Вклад в проект
+
+1. Fork репозитория
+2. Создайте feature branch (`git checkout -b feature/amazing-feature`)
+3. Commit изменения (`git commit -m 'Add amazing feature'`)
+4. Push в branch (`git push origin feature/amazing-feature`)
+5. Откройте Pull Request
+
+## 📄 Лицензия
+
+Этот проект лицензирован под MIT License.
+
+## 🆘 Поддержка
+
+Если у вас есть вопросы или проблемы, создайте issue в репозитории.

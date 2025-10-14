@@ -19,7 +19,7 @@ namespace JobFinder.API.Controllers
             return users;
         }
 
-        [HttpGet]
+        [HttpGet("{id}")]
         public async Task<User> GetUserById(int id)
         {
             User user = new User();

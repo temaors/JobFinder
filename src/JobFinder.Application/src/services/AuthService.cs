@@ -1,7 +1,7 @@
 using Microsoft.AspNetCore.Identity;
 using JobFinder.Core.Models;
 
-namespace JobFinder.Application.AuthService
+namespace JobFinder.Application.Services
 {
     public class AuthService
     {

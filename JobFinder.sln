@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio Version 16
-VisualStudioVersion = 25.0.1706.14
+# Visual Studio Version 17
+VisualStudioVersion = 17.14.36414.22
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{827E0CD3-B72D-47B6-A68D-7590B98EB39B}"
 EndProject
@@ -13,6 +13,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "JobFinder.Core", "src\JobFi
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "JobFinder.Infrastructure", "src\JobFinder.Infrastructure\JobFinder.Infrastructure.csproj", "{10772506-03C7-480C-9C33-DA31D40DD084}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "JobFinder.Tests", "JobFinder.Tests\JobFinder.Tests.csproj", "{82B35E9B-A844-44FD-AFFD-F100D2A2ACFE}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -23,18 +25,6 @@ Global
 		Release|x86 = Release|x86
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{8F8F746A-22B1-4001-8613-52045B4D0500}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{8F8F746A-22B1-4001-8613-52045B4D0500}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{8F8F746A-22B1-4001-8613-52045B4D0500}.Debug|x64.ActiveCfg = Debug|Any CPU
-		{8F8F746A-22B1-4001-8613-52045B4D0500}.Debug|x64.Build.0 = Debug|Any CPU
-		{8F8F746A-22B1-4001-8613-52045B4D0500}.Debug|x86.ActiveCfg = Debug|Any CPU
-		{8F8F746A-22B1-4001-8613-52045B4D0500}.Debug|x86.Build.0 = Debug|Any CPU
-		{8F8F746A-22B1-4001-8613-52045B4D0500}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{8F8F746A-22B1-4001-8613-52045B4D0500}.Release|Any CPU.Build.0 = Release|Any CPU
-		{8F8F746A-22B1-4001-8613-52045B4D0500}.Release|x64.ActiveCfg = Release|Any CPU
-		{8F8F746A-22B1-4001-8613-52045B4D0500}.Release|x64.Build.0 = Release|Any CPU
-		{8F8F746A-22B1-4001-8613-52045B4D0500}.Release|x86.ActiveCfg = Release|Any CPU
-		{8F8F746A-22B1-4001-8613-52045B4D0500}.Release|x86.Build.0 = Release|Any CPU
 		{37D6BA0A-DA65-4AA6-8311-B97ADC524EDD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{37D6BA0A-DA65-4AA6-8311-B97ADC524EDD}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{37D6BA0A-DA65-4AA6-8311-B97ADC524EDD}.Debug|x64.ActiveCfg = Debug|Any CPU
@@ -83,6 +73,18 @@ Global
 		{10772506-03C7-480C-9C33-DA31D40DD084}.Release|x64.Build.0 = Release|Any CPU
 		{10772506-03C7-480C-9C33-DA31D40DD084}.Release|x86.ActiveCfg = Release|Any CPU
 		{10772506-03C7-480C-9C33-DA31D40DD084}.Release|x86.Build.0 = Release|Any CPU
+		{82B35E9B-A844-44FD-AFFD-F100D2A2ACFE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{82B35E9B-A844-44FD-AFFD-F100D2A2ACFE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{82B35E9B-A844-44FD-AFFD-F100D2A2ACFE}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{82B35E9B-A844-44FD-AFFD-F100D2A2ACFE}.Debug|x64.Build.0 = Debug|Any CPU
+		{82B35E9B-A844-44FD-AFFD-F100D2A2ACFE}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{82B35E9B-A844-44FD-AFFD-F100D2A2ACFE}.Debug|x86.Build.0 = Debug|Any CPU
+		{82B35E9B-A844-44FD-AFFD-F100D2A2ACFE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{82B35E9B-A844-44FD-AFFD-F100D2A2ACFE}.Release|Any CPU.Build.0 = Release|Any CPU
+		{82B35E9B-A844-44FD-AFFD-F100D2A2ACFE}.Release|x64.ActiveCfg = Release|Any CPU
+		{82B35E9B-A844-44FD-AFFD-F100D2A2ACFE}.Release|x64.Build.0 = Release|Any CPU
+		{82B35E9B-A844-44FD-AFFD-F100D2A2ACFE}.Release|x86.ActiveCfg = Release|Any CPU
+		{82B35E9B-A844-44FD-AFFD-F100D2A2ACFE}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -92,6 +94,7 @@ Global
 		{0BF72034-746E-48F1-8106-91BF3F93FA07} = {827E0CD3-B72D-47B6-A68D-7590B98EB39B}
 		{F000140C-1824-4EA5-9E12-E2266565C583} = {827E0CD3-B72D-47B6-A68D-7590B98EB39B}
 		{10772506-03C7-480C-9C33-DA31D40DD084} = {827E0CD3-B72D-47B6-A68D-7590B98EB39B}
+		{82B35E9B-A844-44FD-AFFD-F100D2A2ACFE} = {827E0CD3-B72D-47B6-A68D-7590B98EB39B}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {8D43A947-81EB-4E61-B25A-A397A6A01DE0}
