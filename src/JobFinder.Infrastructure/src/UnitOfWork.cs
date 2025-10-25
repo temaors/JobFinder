@@ -8,7 +8,7 @@ namespace JobFinder.Infrastructure
     public class UnitOfWork : IUnitOfWork
     {
         private readonly JobFinderDbContext _context;
-        private IRepository<Job> _jobsRepository;
+        private IRepository<Service> _servicesRepository;
         private IRepository<User> _usersRepository;
         private IRepository<WorkerProfile> _workerProfilesRepository;
 
@@ -17,7 +17,7 @@ namespace JobFinder.Infrastructure
             _context = context;
         }
 
-        public IRepository<Job> JobsRepository { get { return _jobsRepository ??= new Repository<Job>(_context); } }
+        public IRepository<Service> ServicesRepository { get { return _servicesRepository ??= new Repository<Service>(_context); } }
         public IRepository<User> UsersRepository { get { return _usersRepository ??= new Repository<User>(_context); } }
         public IRepository<WorkerProfile> WorkerProfilesRepository { get { return _workerProfilesRepository ??= new Repository<WorkerProfile>(_context); } }
 

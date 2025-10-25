@@ -3,7 +3,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace JobFinder.Core.Models
 {
-    public class Job
+    public class Service
     {
         public Guid Id { get; set; }
         
@@ -24,13 +24,18 @@ namespace JobFinder.Core.Models
         public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
         public DateTime? UpdatedAt { get; set; }
         
-        public JobStatus Status { get; set; } = JobStatus.Active;
-        public JobType Type { get; set; } = JobType.FullTime;
+        public ServiceStatus Status { get; set; } = ServiceStatus.Available;
+        public ServiceCategory Category { get; set; }
         
         [StringLength(100)]
         public string? Location { get; set; }
         
         public bool IsRemote { get; set; }
+        
+        [Range(1, 5)]
+        public double Rating { get; set; } = 0;
+        
+        public int CompletedOrders { get; set; } = 0;
     }
 }
 

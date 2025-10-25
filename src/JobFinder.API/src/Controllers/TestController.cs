@@ -13,98 +13,110 @@ namespace JobFinder.API.Controllers
             return Ok(new { message = "API is running!", timestamp = DateTime.UtcNow });
         }
 
-        [HttpGet("jobs")]
-        public IActionResult GetTestJobs()
+        [HttpGet("services")]
+        public IActionResult GetTestServices()
         {
-            var testJobs = new List<JobDTO>
+            var testServices = new List<ServiceDTO>
             {
-                new JobDTO
+                new ServiceDTO
                 {
                     Id = Guid.NewGuid(),
-                    Title = "Разработчик .NET",
-                    Description = "Ищем опытного разработчика .NET для работы над интересными проектами. Требования: знание C#, ASP.NET Core, Entity Framework, SQL Server.",
-                    Price = 150000,
+                    Title = "Клининг квартиры",
+                    Description = "Профессиональная уборка квартиры: мытье полов, пылесос, уборка санузла и кухни. Использую только экологически чистые средства.",
+                    Price = 2500,
                     WorkerId = Guid.NewGuid(),
-                    WorkerName = "Иван Петров",
+                    WorkerName = "Мария Иванова",
                     CreatedAt = DateTime.UtcNow.AddDays(-2),
-                    Status = JobFinder.Core.Enums.JobStatus.Active,
-                    Type = JobFinder.Core.Enums.JobType.FullTime,
+                    Status = JobFinder.Core.Enums.ServiceStatus.Available,
+                    Category = JobFinder.Core.Enums.ServiceCategory.Cleaning,
                     Location = "Москва",
-                    IsRemote = false
+                    IsRemote = false,
+                    Rating = 4.8,
+                    CompletedOrders = 45
                 },
-                new JobDTO
+                new ServiceDTO
                 {
                     Id = Guid.NewGuid(),
-                    Title = "Frontend разработчик React",
-                    Description = "Нужен опытный React разработчик для создания современных веб-приложений. Опыт работы с TypeScript, Material-UI обязателен.",
-                    Price = 120000,
+                    Title = "Ремонт компьютера",
+                    Description = "Диагностика и ремонт ПК, ноутбуков. Установка ОС, настройка программ, замена комплектующих. Выезд на дом.",
+                    Price = 3000,
                     WorkerId = Guid.NewGuid(),
-                    WorkerName = "Анна Сидорова",
+                    WorkerName = "Алексей Петров",
                     CreatedAt = DateTime.UtcNow.AddDays(-1),
-                    Status = JobFinder.Core.Enums.JobStatus.Active,
-                    Type = JobFinder.Core.Enums.JobType.FullTime,
+                    Status = JobFinder.Core.Enums.ServiceStatus.Available,
+                    Category = JobFinder.Core.Enums.ServiceCategory.Repair,
                     Location = "Санкт-Петербург",
-                    IsRemote = true
+                    IsRemote = false,
+                    Rating = 4.9,
+                    CompletedOrders = 78
                 },
-                new JobDTO
+                new ServiceDTO
                 {
                     Id = Guid.NewGuid(),
-                    Title = "DevOps инженер",
-                    Description = "Ищем DevOps инженера для настройки CI/CD, работы с Docker, Kubernetes, Azure/AWS. Опыт с мониторингом обязателен.",
-                    Price = 180000,
+                    Title = "Доставка продуктов",
+                    Description = "Быстрая доставка продуктов из магазинов. Работаю с 8:00 до 22:00. Доставка в течение 1-2 часов.",
+                    Price = 500,
                     WorkerId = Guid.NewGuid(),
-                    WorkerName = "Михаил Козлов",
+                    WorkerName = "Дмитрий Козлов",
                     CreatedAt = DateTime.UtcNow.AddHours(-12),
-                    Status = JobFinder.Core.Enums.JobStatus.Active,
-                    Type = JobFinder.Core.Enums.JobType.FullTime,
+                    Status = JobFinder.Core.Enums.ServiceStatus.Available,
+                    Category = JobFinder.Core.Enums.ServiceCategory.Delivery,
                     Location = "Москва",
-                    IsRemote = true
+                    IsRemote = false,
+                    Rating = 4.7,
+                    CompletedOrders = 156
                 },
-                new JobDTO
+                new ServiceDTO
                 {
                     Id = Guid.NewGuid(),
-                    Title = "UI/UX дизайнер",
-                    Description = "Требуется креативный UI/UX дизайнер для создания интерфейсов мобильных и веб-приложений. Опыт работы с Figma, Adobe Creative Suite.",
-                    Price = 90000,
+                    Title = "Уход за садом",
+                    Description = "Стрижка газона, обрезка кустов, посадка цветов, полив растений. Опыт работы 5+ лет.",
+                    Price = 4000,
                     WorkerId = Guid.NewGuid(),
                     WorkerName = "Елена Волкова",
                     CreatedAt = DateTime.UtcNow.AddHours(-6),
-                    Status = JobFinder.Core.Enums.JobStatus.InProgress,
-                    Type = JobFinder.Core.Enums.JobType.PartTime,
+                    Status = JobFinder.Core.Enums.ServiceStatus.Available,
+                    Category = JobFinder.Core.Enums.ServiceCategory.Gardening,
                     Location = "Новосибирск",
-                    IsRemote = true
+                    IsRemote = false,
+                    Rating = 4.6,
+                    CompletedOrders = 23
                 },
-                new JobDTO
+                new ServiceDTO
                 {
                     Id = Guid.NewGuid(),
-                    Title = "Тестировщик ПО",
-                    Description = "Ищем QA инженера для тестирования веб и мобильных приложений. Знание автоматизации тестирования, Selenium, Postman приветствуется.",
-                    Price = 80000,
+                    Title = "Выгул собак",
+                    Description = "Профессиональный выгул собак любых пород. Опыт работы с животными 3 года. Готов к долгим прогулкам.",
+                    Price = 800,
                     WorkerId = Guid.NewGuid(),
-                    WorkerName = "Дмитрий Смирнов",
+                    WorkerName = "Анна Смирнова",
                     CreatedAt = DateTime.UtcNow.AddHours(-3),
-                    Status = JobFinder.Core.Enums.JobStatus.Active,
-                    Type = JobFinder.Core.Enums.JobType.Contract,
+                    Status = JobFinder.Core.Enums.ServiceStatus.Available,
+                    Category = JobFinder.Core.Enums.ServiceCategory.PetCare,
                     Location = "Екатеринбург",
-                    IsRemote = false
+                    IsRemote = false,
+                    Rating = 4.9,
+                    CompletedOrders = 67
                 },
-                new JobDTO
+                new ServiceDTO
                 {
                     Id = Guid.NewGuid(),
-                    Title = "Системный аналитик",
-                    Description = "Требуется системный аналитик для анализа бизнес-процессов, создания технических требований и работы с заказчиками.",
-                    Price = 110000,
+                    Title = "Репетитор по математике",
+                    Description = "Подготовка к ЕГЭ, ОГЭ, помощь с домашними заданиями. Опыт преподавания 8 лет. Онлайн и офлайн занятия.",
+                    Price = 2000,
                     WorkerId = Guid.NewGuid(),
                     WorkerName = "Ольга Морозова",
                     CreatedAt = DateTime.UtcNow.AddHours(-1),
-                    Status = JobFinder.Core.Enums.JobStatus.Completed,
-                    Type = JobFinder.Core.Enums.JobType.FullTime,
+                    Status = JobFinder.Core.Enums.ServiceStatus.Available,
+                    Category = JobFinder.Core.Enums.ServiceCategory.Tutoring,
                     Location = "Казань",
-                    IsRemote = false
+                    IsRemote = true,
+                    Rating = 4.8,
+                    CompletedOrders = 89
                 }
             };
 
-            return Ok(testJobs);
+            return Ok(testServices);
         }
 
         [HttpGet("users")]

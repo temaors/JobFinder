@@ -1,6 +1,6 @@
 const API_BASE_URL = '/api';
 
-export interface Job {
+export interface Service {
   id: string;
   title: string;
   description: string;
@@ -8,32 +8,59 @@ export interface Job {
   workerId: string;
   workerName: string;
   createdAt: string;
-  status: 'Active' | 'InProgress' | 'Completed' | 'Cancelled';
-  type: 'FullTime' | 'PartTime' | 'Contract' | 'Freelance';
+  status: 'Available' | 'Unavailable' | 'Paused';
+  category: 'Cleaning' | 'Repair' | 'Delivery' | 'Gardening' | 'PetCare' | 'Tutoring' | 'Photography' | 'Beauty' | 'Other';
   location?: string;
   isRemote: boolean;
+  rating: number;
+  completedOrders: number;
 }
 
-export interface CreateJobRequest {
+export interface CreateServiceRequest {
   title: string;
   description: string;
   price: number;
-  type: 'FullTime' | 'PartTime' | 'Contract' | 'Freelance';
+  category: 'Cleaning' | 'Repair' | 'Delivery' | 'Gardening' | 'PetCare' | 'Tutoring' | 'Photography' | 'Beauty' | 'Other';
   location?: string;
   isRemote: boolean;
 }
 
-export interface UpdateJobRequest {
+export interface UpdateServiceRequest {
   title: string;
   description: string;
   price: number;
-  status: 'Active' | 'InProgress' | 'Completed' | 'Cancelled';
-  type: 'FullTime' | 'PartTime' | 'Contract' | 'Freelance';
+  status: 'Available' | 'Unavailable' | 'Paused';
+  category: 'Cleaning' | 'Repair' | 'Delivery' | 'Gardening' | 'PetCare' | 'Tutoring' | 'Photography' | 'Beauty' | 'Other';
   location?: string;
   isRemote: boolean;
 }
 
-class JobsApi {
+export interface Order {
+  id: string;
+  serviceId: string;
+  serviceTitle: string;
+  customerId: string;
+  customerName: string;
+  createdAt: string;
+  scheduledDate?: string;
+  completedAt?: string;
+  status: 'Pending' | 'Confirmed' | 'InProgress' | 'Completed' | 'Cancelled' | 'Rejected';
+  customerNotes?: string;
+  workerNotes?: string;
+  totalPrice: number;
+  address?: string;
+  contactPhone?: string;
+}
+
+export interface CreateOrderRequest {
+  serviceId: string;
+  scheduledDate?: string;
+  customerNotes?: string;
+  address?: string;
+  contactPhone?: string;
+}
+
+class ServicesApi {
   private async request<T>(
     endpoint: string,
     options: RequestInit = {}
@@ -63,33 +90,48 @@ class JobsApi {
     return data;
   }
 
-  async getAllJobs(): Promise<Job[]> {
-    return this.request<Job[]>('/test/jobs');
+  async getAllServices(): Promise<Service[]> {
+    return this.request<Service[]>('/services');
   }
 
-  async getJobById(id: string): Promise<Job> {
-    return this.request<Job>(`/${id}`);
+  async getServiceById(id: string): Promise<Service> {
+    return this.request<Service>(`/services/${id}`);
   }
 
-  async createJob(job: CreateJobRequest): Promise<Job> {
-    return this.request<Job>('', {
+  async createService(service: CreateServiceRequest): Promise<Service> {
+    return this.request<Service>('/services', {
       method: 'POST',
-      body: JSON.stringify(job),
+      body: JSON.stringify(service),
     });
   }
 
-  async updateJob(id: string, job: UpdateJobRequest): Promise<void> {
-    return this.request<void>(`/${id}`, {
+  async updateService(id: string, service: UpdateServiceRequest): Promise<void> {
+    return this.request<void>(`/services/${id}`, {
       method: 'PUT',
-      body: JSON.stringify(job),
+      body: JSON.stringify(service),
     });
   }
 
-  async deleteJob(id: string): Promise<void> {
-    return this.request<void>(`/${id}`, {
+  async deleteService(id: string): Promise<void> {
+    return this.request<void>(`/services/${id}`, {
       method: 'DELETE',
+    });
+  }
+
+  async getAllOrders(): Promise<Order[]> {
+    return this.request<Order[]>('/orders');
+  }
+
+  async getOrderById(id: string): Promise<Order> {
+    return this.request<Order>(`/orders/${id}`);
+  }
+
+  async createOrder(order: CreateOrderRequest): Promise<Order> {
+    return this.request<Order>('/orders', {
+      method: 'POST',
+      body: JSON.stringify(order),
     });
   }
 }
 
-export const jobsApi = new JobsApi(); 
+export const servicesApi = new ServicesApi(); 

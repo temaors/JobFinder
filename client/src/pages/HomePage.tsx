@@ -28,42 +28,47 @@ import LocationOnIcon from '@mui/icons-material/LocationOn';
 import WorkIcon from '@mui/icons-material/Work';
 import AttachMoneyIcon from '@mui/icons-material/AttachMoney';
 import ScheduleIcon from '@mui/icons-material/Schedule';
-import { jobsApi, Job } from '../api/jobsApi';
+import { servicesApi, Service } from '../api/jobsApi';
 
 const HomePage: React.FC = () => {
   const navigate = useNavigate();
-  const [jobs, setJobs] = useState<Job[]>([]);
+  const [services, setServices] = useState<Service[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [searchTerm, setSearchTerm] = useState('');
   const [location, setLocation] = useState('');
   const [category, setCategory] = useState('');
   
-  // Категории работ (соответствуют типам из API)
+  // Категории услуг
   const categories = [
-    { value: 'FullTime', label: 'Полная занятость' },
-    { value: 'PartTime', label: 'Частичная занятость' },
-    { value: 'Contract', label: 'Контракт' },
-    { value: 'Freelance', label: 'Фриланс' }
+    { value: 'Cleaning', label: 'Клининг' },
+    { value: 'Repair', label: 'Ремонт' },
+    { value: 'Delivery', label: 'Доставка' },
+    { value: 'Gardening', label: 'Садоводство' },
+    { value: 'PetCare', label: 'Уход за животными' },
+    { value: 'Tutoring', label: 'Репетиторство' },
+    { value: 'Photography', label: 'Фотография' },
+    { value: 'Beauty', label: 'Красота' },
+    { value: 'Other', label: 'Другое' }
   ];
 
-  // Загрузка вакансий
+  // Загрузка услуг
   useEffect(() => {
-    const fetchJobs = async () => {
+    const fetchServices = async () => {
       try {
         setLoading(true);
         setError(null);
-        const jobsData = await jobsApi.getAllJobs();
-        setJobs(jobsData);
+        const servicesData = await servicesApi.getAllServices();
+        setServices(servicesData);
       } catch (error) {
-        console.error('Error fetching jobs', error);
-        setError('Ошибка при загрузке вакансий');
+        console.error('Error fetching services', error);
+        setError('Ошибка при загрузке услуг');
       } finally {
         setLoading(false);
       }
     };
 
-    fetchJobs();
+    fetchServices();
   }, []);
 
   const handleSearch = () => {
@@ -74,25 +79,24 @@ const HomePage: React.FC = () => {
     setCategory(event.target.value as string);
   };
 
-  const handleJobSelect = (job: Job) => {
-    navigate(`/jobs`);
+  const handleServiceSelect = (service: Service) => {
+    navigate(`/services`);
   };
 
-  // Фильтрация вакансий
-  const filteredJobs = jobs.filter(job => {
-    const matchesSearch = job.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
-                         job.description.toLowerCase().includes(searchTerm.toLowerCase());
-    const matchesLocation = !location || job.location?.toLowerCase().includes(location.toLowerCase());
-    const matchesCategory = !category || job.type === category;
+  // Фильтрация услуг
+  const filteredServices = services.filter(service => {
+    const matchesSearch = service.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
+                         service.description.toLowerCase().includes(searchTerm.toLowerCase());
+    const matchesLocation = !location || service.location?.toLowerCase().includes(location.toLowerCase());
+    const matchesCategory = !category || service.category === category;
     return matchesSearch && matchesLocation && matchesCategory;
   });
 
   const getStatusColor = (status: string) => {
     switch (status) {
-      case 'Active': return 'success';
-      case 'InProgress': return 'warning';
-      case 'Completed': return 'info';
-      case 'Cancelled': return 'error';
+      case 'Available': return 'success';
+      case 'Unavailable': return 'error';
+      case 'Paused': return 'warning';
       default: return 'default';
     }
   };
@@ -124,19 +128,19 @@ const HomePage: React.FC = () => {
           variant="contained" 
           color="primary" 
           size="large"
-          onClick={() => navigate('/jobs')}
+          onClick={() => navigate('/services')}
           sx={{ mr: 2 }}
         >
-          Найти работу
+          Найти работника
         </Button>
         
         <Button 
           variant="outlined" 
           color="inherit" 
           size="large"
-          onClick={() => navigate('/jobs')}
+          onClick={() => navigate('/services')}
         >
-          Посмотреть вакансии
+          Посмотреть услуги
         </Button>
       </Box>
 
@@ -227,10 +231,10 @@ const HomePage: React.FC = () => {
         </Box>
       </Box>
 
-      {/* Последние вакансии */}
+      {/* Последние услуги */}
       <Box sx={{ mb: 4 }}>
         <Typography variant="h5" component="h2" gutterBottom>
-          Последние вакансии
+          Популярные услуги
         </Typography>
         
         {error && (
@@ -243,16 +247,16 @@ const HomePage: React.FC = () => {
           <Box display="flex" justifyContent="center" py={4}>
             <CircularProgress />
           </Box>
-        ) : filteredJobs.length === 0 ? (
+        ) : filteredServices.length === 0 ? (
           <Paper sx={{ p: 4, textAlign: 'center' }}>
             <Typography variant="h6" color="text.secondary">
-              {jobs.length === 0 ? 'Вакансии не найдены' : 'Вакансии не найдены по заданным критериям'}
+              {services.length === 0 ? 'Услуги не найдены' : 'Услуги не найдены по заданным критериям'}
             </Typography>
           </Paper>
         ) : (
           <Grid container spacing={3}>
-            {filteredJobs.slice(0, 6).map((job) => (
-              <Grid item key={job.id} xs={12} sm={6} md={4}>
+            {filteredServices.slice(0, 6).map((service) => (
+              <Grid item key={service.id} xs={12} sm={6} md={4}>
                 <Card 
                   sx={{ 
                     height: '100%', 
@@ -265,52 +269,60 @@ const HomePage: React.FC = () => {
                       boxShadow: 4
                     }
                   }}
-                  onClick={() => handleJobSelect(job)}
+                  onClick={() => handleServiceSelect(service)}
                 >
                   <CardContent sx={{ flexGrow: 1 }}>
                     <Box display="flex" justifyContent="space-between" alignItems="flex-start" mb={2}>
                       <Typography variant="h6" component="h3" sx={{ fontWeight: 'bold', flex: 1 }}>
-                        {job.title}
+                        {service.title}
                       </Typography>
                       <Typography variant="h6" color="primary" sx={{ fontWeight: 'bold' }}>
-                        ${job.price}
+                        {service.price} ₽
                       </Typography>
                     </Box>
 
                     <Typography variant="body2" color="text.secondary" sx={{ mb: 2, minHeight: 60 }}>
-                      {job.description.length > 100 
-                        ? `${job.description.substring(0, 100)}...` 
-                        : job.description}
+                      {service.description.length > 100 
+                        ? `${service.description.substring(0, 100)}...` 
+                        : service.description}
                     </Typography>
 
                     <Box display="flex" alignItems="center" gap={1} mb={1}>
                       <WorkIcon fontSize="small" color="action" />
                       <Typography variant="body2" color="text.secondary">
-                        {job.workerName || 'Не указан'}
+                        {service.workerName || 'Не указан'}
                       </Typography>
+                      <Box display="flex" alignItems="center" gap={0.5} ml={1}>
+                        <Typography variant="body2" color="text.secondary">
+                          ⭐ {service.rating.toFixed(1)}
+                        </Typography>
+                        <Typography variant="body2" color="text.secondary">
+                          ({service.completedOrders})
+                        </Typography>
+                      </Box>
                     </Box>
 
-                    {job.location && (
+                    {service.location && (
                       <Box display="flex" alignItems="center" gap={1} mb={2}>
                         <LocationOnIcon fontSize="small" color="action" />
                         <Typography variant="body2" color="text.secondary">
-                          {job.location}
+                          {service.location}
                         </Typography>
                       </Box>
                     )}
 
                     <Box display="flex" gap={1} mb={2} flexWrap="wrap">
                       <Chip
-                        label={job.status}
-                        color={getStatusColor(job.status) as any}
+                        label={categories.find(c => c.value === service.category)?.label || service.category}
+                        color="primary"
                         size="small"
                       />
                       <Chip
-                        label={job.type}
-                        color="default"
+                        label={service.status === 'Available' ? 'Доступно' : service.status === 'Unavailable' ? 'Недоступно' : 'Приостановлено'}
+                        color={getStatusColor(service.status) as any}
                         size="small"
                       />
-                      {job.isRemote && (
+                      {service.isRemote && (
                         <Chip
                           label="Удаленно"
                           color="info"
@@ -322,7 +334,7 @@ const HomePage: React.FC = () => {
                     <Box display="flex" alignItems="center" gap={1}>
                       <ScheduleIcon fontSize="small" color="action" />
                       <Typography variant="caption" color="text.secondary">
-                        {new Date(job.createdAt).toLocaleDateString()}
+                        {new Date(service.createdAt).toLocaleDateString()}
                       </Typography>
                     </Box>
                   </CardContent>
@@ -334,7 +346,7 @@ const HomePage: React.FC = () => {
                       fullWidth
                       onClick={(e) => {
                         e.stopPropagation();
-                        navigate('/jobs');
+                        navigate('/services');
                       }}
                     >
                       Подробнее

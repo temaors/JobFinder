@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
 using Microsoft.OpenApi.Models;
 
 namespace JobFinder.API 
@@ -11,20 +12,15 @@ namespace JobFinder.API
         {
             var builder = WebApplication.CreateBuilder(args);
 
-            // Add services to the container
-            builder.Services.AddControllers();
-            builder.Services.AddEndpointsApiExplorer();
-            builder.Services.AddSwaggerGen(c =>
-            {
-                c.SwaggerDoc("v1", new OpenApiInfo { Title = "JobFinder API", Version = "v1" });
-            });
+            // Configure all services using extension method
+            builder.Services.ConfigureServices(builder.Configuration);
 
-            // Add CORS
+            // Update CORS to allow Vite dev server
             builder.Services.AddCors(options =>
             {
                 options.AddPolicy("AllowReactApp", policy =>
                 {
-                    policy.WithOrigins("http://localhost:5173")
+                    policy.WithOrigins("http://localhost:5173", "http://localhost:3000")
                           .AllowAnyHeader()
                           .AllowAnyMethod();
                 });
@@ -33,7 +29,7 @@ namespace JobFinder.API
             var app = builder.Build();
 
             // Configure the HTTP request pipeline
-            if (app.Environment.EnvironmentName == "Development")
+            if (app.Environment.IsDevelopment())
             {
                 app.UseSwagger();
                 app.UseSwaggerUI(c =>
@@ -45,7 +41,10 @@ namespace JobFinder.API
 
             app.UseHttpsRedirection();
             app.UseCors("AllowReactApp");
+            
+            app.UseAuthentication();
             app.UseAuthorization();
+            
             app.MapControllers();
 
             app.Run();

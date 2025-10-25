@@ -3,9 +3,9 @@ using JobFinder.Infrastructure.Database;
 
 namespace JobFinder.Infrastructure.Repositories
 {
-    public class JobsRepository : Repository<Job>
+    public class ServicesRepository : Repository<Service>
     {
-        public JobsRepository(JobFinderDbContext context) :
+        public ServicesRepository(JobFinderDbContext context) :
             base(context)
         { }
     }

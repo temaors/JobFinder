@@ -4,10 +4,10 @@ namespace JobFinder.Application.Services
 {
     public interface IJobService
     {
-        Task<IEnumerable<Job>> GetAllJobsAsync();
-        Task<Job?> GetJobByIdAsync(Guid id);
-        Task<Job> CreateJobAsync(Job job);
-        Task<Job> UpdateJobAsync(Job job);
+        Task<IEnumerable<Service>> GetAllJobsAsync();
+        Task<Service?> GetJobByIdAsync(Guid id);
+        Task<Service> CreateJobAsync(Service service);
+        Task<Service> UpdateJobAsync(Service service);
         Task DeleteJobAsync(Guid id);
         //Task<IEnumerable<Job>> GetJobsByWorkerIdAsync(Guid workerId);
     }

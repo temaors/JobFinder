@@ -36,7 +36,7 @@ const Header: React.FC = () => {
         <Work sx={{ mr: 2 }} />
         <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
           <RouterLink to="/" style={{ textDecoration: 'none', color: 'inherit' }}>
-            JobFinder
+            WorkFinder
           </RouterLink>
         </Typography>
         
@@ -44,17 +44,17 @@ const Header: React.FC = () => {
           <Button 
             color="inherit" 
             component={RouterLink} 
-            to="/workers"
+            to="/services"
           >
-            Найти работу
+            Найти работника
           </Button>
           
           <Button 
             color="inherit" 
             component={RouterLink} 
-            to="/jobs"
+            to="/my-services"
           >
-            Вакансии
+            Мои услуги
           </Button>
           
           <Button 

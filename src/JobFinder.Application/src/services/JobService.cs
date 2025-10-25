@@ -12,37 +12,37 @@ namespace JobFinder.Application.Services
             _unitOfWork = unitOfWork;
         }
 
-        public async Task<IEnumerable<Job>> GetAllJobsAsync()
+        public async Task<IEnumerable<Service>> GetAllJobsAsync()
         {
-            return _unitOfWork.JobsRepository.Get();
+            return _unitOfWork.ServicesRepository.Get();
         }
 
-        public async Task<Job?> GetJobByIdAsync(Guid id)
+        public async Task<Service?> GetJobByIdAsync(Guid id)
         {
-            return _unitOfWork.JobsRepository.GetById(id);
+            return _unitOfWork.ServicesRepository.GetById(id);
         }
 
-        public async Task<Job> CreateJobAsync(Job job)
+        public async Task<Service> CreateJobAsync(Service service)
         {
-            job.Id = Guid.NewGuid();
-            _unitOfWork.JobsRepository.Insert(job);
+            service.Id = Guid.NewGuid();
+            _unitOfWork.ServicesRepository.Insert(service);
             await _unitOfWork.SaveChangesAsync();
-            return job;
+            return service;
         }
 
-        public async Task<Job> UpdateJobAsync(Job job)
+        public async Task<Service> UpdateJobAsync(Service service)
         {
-            _unitOfWork.JobsRepository.Update(job);
+            _unitOfWork.ServicesRepository.Update(service);
             await _unitOfWork.SaveChangesAsync();
-            return job;
+            return service;
         }
 
         public async Task DeleteJobAsync(Guid id)
         {
-            var job =  _unitOfWork.JobsRepository.GetById(id);
-            if (job != null)
+            var service =  _unitOfWork.ServicesRepository.GetById(id);
+            if (service != null)
             {
-                _unitOfWork.JobsRepository.Delete(job);
+                _unitOfWork.ServicesRepository.Delete(service);
                 await _unitOfWork.SaveChangesAsync();
             }
         }

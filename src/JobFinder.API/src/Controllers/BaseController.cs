@@ -5,7 +5,7 @@ namespace JobFinder.API.Controllers
 {
 	public class BaseController : ControllerBase
 	{
-		private readonly JobFinderDbContext _context;
+		protected readonly JobFinderDbContext _context;
 
 		public BaseController(JobFinderDbContext context)
 		{
